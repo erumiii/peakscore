@@ -2,22 +2,36 @@
 
 namespace Database\Seeders;
 
+use App\Models\Soal;
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        User::create([
+            'username' => 'admin',
+            'name' => 'Admin',
+            'password' => Hash::make('password'),
+            'role' => 'admin',
         ]);
+
+        User::create([
+            'username' => 'peserta',
+            'name' => 'Peserta Contoh',
+            'password' => Hash::make('password'),
+            'role' => 'peserta',
+        ]);
+
+        // Restore data soal dari backup pra-migrate:fresh
+        $backup = __DIR__ . '/soal-backup.json';
+        if (is_file($backup)) {
+            foreach (json_decode(file_get_contents($backup), true) as $row) {
+                unset($row['soalId']);
+                Soal::create($row);
+            }
+        }
     }
 }

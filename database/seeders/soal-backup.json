@@ -1,0 +1,123 @@
+[
+    {
+        "soalId": 2,
+        "isiSoal": "Apa sinonim dari kata terkenal?",
+        "opsiA": "Kaya",
+        "opsiB": "Terhormat",
+        "opsiC": "Populer",
+        "opsiD": "Terkemuka",
+        "gambarSoal": null,
+        "jawabanBenar": "C",
+        "kategori": "Verbal"
+    },
+    {
+        "soalId": 3,
+        "isiSoal": "Kata yang memiliki makna sinonim dengan \"membenci\" adalah...",
+        "opsiA": "Menyukai",
+        "opsiB": "Mengagumi",
+        "opsiC": "Mengejek",
+        "opsiD": "Menjijikkan",
+        "gambarSoal": null,
+        "jawabanBenar": "D",
+        "kategori": "Verbal"
+    },
+    {
+        "soalId": 4,
+        "isiSoal": "Apa lawan kata dari tenggelam?",
+        "opsiA": "Terombang-ambing",
+        "opsiB": "Terapung",
+        "opsiC": "Melayang-layang",
+        "opsiD": "Terkatung",
+        "gambarSoal": null,
+        "jawabanBenar": "B",
+        "kategori": "Verbal"
+    },
+    {
+        "soalId": 6,
+        "isiSoal": "Jika semua kucing suka susu, dan Tom adalah seekor kucing, maka apa kesimpulan yang dapat ditarik?",
+        "opsiA": "Tom suka susu",
+        "opsiB": "Semua kucing adalah Tom",
+        "opsiC": "Semua hewan suka susu",
+        "opsiD": "Semua hewan adalah kucing",
+        "gambarSoal": null,
+        "jawabanBenar": "A",
+        "kategori": "Logic"
+    },
+    {
+        "soalId": 7,
+        "isiSoal": "Jika semua buku di rak adalah novel, dan Harry Potter adalah sebuah buku, maka apa kesimpulan yang dapat ditarik?",
+        "opsiA": "Semua buku adalah Harry Potter",
+        "opsiB": "Semua novel adalah buku\r\n",
+        "opsiC": "Semua novel adalah Harry Potter",
+        "opsiD": "Semua Harry Potter adalah novel",
+        "gambarSoal": null,
+        "jawabanBenar": "D",
+        "kategori": "Logic"
+    },
+    {
+        "soalId": 8,
+        "isiSoal": "Semua mamalia menyusui anak mereka. Kucing adalah mamalia.",
+        "opsiA": "Tidak ada kesimpulan",
+        "opsiB": "Semua kucing menyusui anaknya",
+        "opsiC": "Kucing menyusui anaknya",
+        "opsiD": "Semua salah",
+        "gambarSoal": null,
+        "jawabanBenar": "C",
+        "kategori": "Logic"
+    },
+    {
+        "soalId": 9,
+        "isiSoal": "3, 6, 4, 8, 6, ..., ...",
+        "opsiA": "24, 12",
+        "opsiB": "24, 36",
+        "opsiC": "12, 10",
+        "opsiD": "12, 18",
+        "gambarSoal": null,
+        "jawabanBenar": "C",
+        "kategori": "Numeric"
+    },
+    {
+        "soalId": 10,
+        "isiSoal": "6, 3, 4, 1, 2, -1, (...)",
+        "opsiA": "-6",
+        "opsiB": "-2",
+        "opsiC": "-4",
+        "opsiD": "0",
+        "gambarSoal": null,
+        "jawabanBenar": "D",
+        "kategori": "Numeric"
+    },
+    {
+        "soalId": 11,
+        "isiSoal": "4, 0, 8, 4, 12, 8, ...",
+        "opsiA": "24",
+        "opsiB": "20",
+        "opsiC": "16",
+        "opsiD": "12",
+        "gambarSoal": null,
+        "jawabanBenar": "C",
+        "kategori": "Numeric"
+    },
+    {
+        "soalId": 12,
+        "isiSoal": "Hasil dari 1/2 + 1/4 adalah …",
+        "opsiA": "3/4",
+        "opsiB": "1/2",
+        "opsiC": "1",
+        "opsiD": "5/8",
+        "gambarSoal": null,
+        "jawabanBenar": "A",
+        "kategori": "Numeric"
+    },
+    {
+        "soalId": 14,
+        "isiSoal": "Semua dokter adalah orang terpelajar. Sebagian orang terpelajar adalah ilmuwan. Jadi…",
+        "opsiA": "Semua dokter adalah ilmuwan",
+        "opsiB": "Sebagian ilmuwan adalah orang terpelajar",
+        "opsiC": "Semua orang terpelajar adalah dokter",
+        "opsiD": "Sebagian dokter adalah ilmuwan",
+        "gambarSoal": null,
+        "jawabanBenar": "D",
+        "kategori": "Logic"
+    }
+]

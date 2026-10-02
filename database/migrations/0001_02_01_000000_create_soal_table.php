@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('gambarOpsiC', 500)->nullable();
             $table->string('gambarOpsiD', 500)->nullable();
             $table->char('jawabanBenar', 1);
-            $table->enum('kategori', ['Verbal', 'Numerik', 'Logika', 'Spasial']);
+            $table->enum('kategori', ['Verbal', 'Numeric', 'Logic', 'Spatial']);
         });
     }
 
