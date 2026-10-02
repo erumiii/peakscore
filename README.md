@@ -1,4 +1,4 @@
-<h1>Peakscore</h1>
+<h1 data-importer="text" align="center">Peakscore</h1>
 
 ## Overview
 
