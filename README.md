@@ -1,66 +1,186 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<h1>Peakscore</h1>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Overview
 
-## About Laravel
+**Peakscore** is a web-based examination management system designed for organizations such as schools, universities, and testing institutions to conduct and manage academic potential tests.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+The application provides two separate portals:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+* **Admin Portal**: Allows test organizers to manage question banks, create test schedules, manage participant accounts, review test results, and issue transcripts.
+* **Participant Portal**: Allows registered participants to access scheduled tests, complete assessments, and view their published results and transcripts.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+The platform uses an **organization-managed registration model**, where participant accounts are created and managed by the test organizer. Participants cannot register independently, allowing organizations to control participant access and test eligibility.
 
-## Learning Laravel
+## Core Features
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+* Question bank management
+* Test scheduling and management
+* Participant CRUD management
+* Online test administration
+* Automated test result processing
+* Result monitoring and review
+* Transcript generation and issuance
+* Role-based access between administrators and participants
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## User Roles
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+### Admin
+- Manage question bank
+- Create and manage test schedules
+- Manage participant accounts
+- Review participant test results
+- Issue participant transcripts
 
-## Laravel Sponsors
+### Participant
+- Access assigned tests
+- Take tests within the scheduled period
+- View test results
+- View issued transcripts
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Application Flow
 
-### Premium Partners
+1. Admin registers participant accounts.
+2. Admin creates and manages the test questions.
+3. Admin creates a test schedule and assigns participants.
+4. Participants log in and take the test during the scheduled period.
+5. The system processes and records the test results.
+6. Admin reviews the results.
+7. Admin publishes the participant's transcript.
+8. Participants can view their published results and transcript.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+```
+Admin
+  │
+  ├── Manage Questions
+  ├── Register Participants
+  └── Create Test Schedule
+              │
+              ▼
+        Participant
+              │
+              ▼
+          Take Test
+              │
+              ▼
+       Process Results
+              │
+              ▼
+            Admin
+              │
+              ▼
+       Issue Transcript
+              │
+              ▼
+        Participant
+```
+## Tech Stack
 
-## Contributing
+- Laravel 11
+- MariaDB
+- Tailwind CSS v4 (CDN)
+- Alpine.js 3 (CDN)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Project Structure
+```
+└── project/
+    ├── app/
+    │   ├── Http/
+    │   │   ├── Controllers
+    │   │   └── Middleware
+    │   ├── Models
+    │   ├── Provider
+    │   └── View/
+    │       └── Components
+    ├── bootstrap
+    ├── config
+    ├── database/
+    │   ├── factories
+    │   ├── migrations
+    │   ├── seeders
+    │   └── .gitignore
+    ├── public/
+    │   ├── js
+    │   ├── uploads/
+    │   │   └── soal
+    │   └── favicon.ico
+    ├── resources/
+    │   ├── css
+    │   ├── js
+    │   └── view/
+    │       ├── layouts
+    │       ├── participants
+    │       ├── questions
+    │       ├── results
+    │       ├── schedules
+    │       ├── vendor/
+    │       │   └── pagination
+    │       └── index.blade.php
+    ├── routes/
+    │   ├── console.php
+    │   └── web.php
+    ├── storage/
+    │   ├── app
+    │   ├── framework
+    │   └── logs
+    ├── tests/
+    │   ├── Feature
+    │   ├── Unit
+    │   └── TestCase.php
+    ├── .editorconfig
+    ├── .env.example
+    ├── .gitattributes
+    ├── .gitignore
+    ├── artisan
+    ├── composer.json
+    ├── composer.lock
+    ├── package.json
+    ├── phpunit.xml
+    └── vite.config.js
+```
 
-## Code of Conduct
+## Screenshot
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### Login Page
+![Login Page](https://github.com/user-attachments/assets/941f8ec4-13c7-4327-b2d1-efbbe4366c61)
 
-## Security Vulnerabilities
+### Admin Dashboard
+![Admin Dashboard](https://github.com/user-attachments/assets/87b91e60-b295-42cd-94d6-74c29625167a)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### Test Schedules (Admin)
+![Test Schedules (Admin)](https://github.com/user-attachments/assets/ba74456a-4b16-4d11-b8a2-4a117fcb7c87)
 
-## License
+### New Schedules Modal
+![New Schedules Modal](https://github.com/user-attachments/assets/ec988602-53db-49be-a5bf-57440b8285be)
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Question Bank
+![Question Bank](https://github.com/user-attachments/assets/9f02823b-1844-49bc-81ea-456234773346)
+
+### Add Question 
+![Add Question](https://github.com/user-attachments/assets/ab3d41d5-c65b-4106-877e-15b5309d1e45)
+
+### Participants Management
+![Participants Management](https://github.com/user-attachments/assets/9cdea711-2692-4bde-867e-a21658e6dd44)
+
+### Add Participants Modal
+![Add Participants Modal](https://github.com/user-attachments/assets/bf4636c3-5906-4637-b669-01e2c8c2fca8)
+
+### Test Results
+![Test Results (Admin)](https://github.com/user-attachments/assets/4204ff64-0318-4772-9222-a9cc9b0fa911)
+
+### Answer Details
+![Answer Details](https://github.com/user-attachments/assets/5a541d97-cf9e-4144-a9d6-203e8b9c265d)
+
+### Transcript
+![Transcript](https://github.com/user-attachments/assets/750f911f-ec3f-46f3-b43f-59f02d921b7f)
+
+### Test Schedule (Participant)
+![Test Schedule (Participant)](https://github.com/user-attachments/assets/401deebb-44f0-45a5-9902-b29b8475fdb1)
+
+### My Results
+![My Results](https://github.com/user-attachments/assets/e5d598db-8114-4a8a-a0a4-642f676bd5f4)
+
+## Contributors
+[@erumiii](https://github.com/erumiii)
+
+
+
