@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Jadwal;
+use App\Models\Soal;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Facades\Hash;
@@ -15,8 +16,8 @@ class SchedulesTest extends TestCase
     private function user(string $role): User
     {
         return User::create([
-            'username' => 'test-' . $role . '-' . uniqid(),
-            'name' => ucfirst($role) . ' Test',
+            'username' => 'test-'.$role.'-'.uniqid(),
+            'name' => ucfirst($role).' Test',
             'password' => Hash::make('password'),
             'role' => $role,
         ]);
@@ -30,6 +31,18 @@ class SchedulesTest extends TestCase
             'mulai' => '2026-10-10 08:00:00',
             'selesai' => '2026-10-10 10:00:00',
         ], $overrides);
+    }
+
+    private function bankSoalCukup(): void
+    {
+        foreach (['Verbal', 'Numeric', 'Logic', 'Spatial'] as $kategori) {
+            Soal::create([
+                'isiSoal' => 'Soal '.$kategori.' '.uniqid(),
+                'kategori' => $kategori,
+                'opsiA' => 'A', 'opsiB' => 'B', 'opsiC' => 'C', 'opsiD' => 'D',
+                'jawabanBenar' => 'A',
+            ]);
+        }
     }
 
     public function test_guest_redirects_to_login(): void
@@ -55,6 +68,7 @@ class SchedulesTest extends TestCase
     public function test_store_creates_jadwal(): void
     {
         $admin = $this->user('admin');
+        $this->bankSoalCukup();
         $this->actingAs($admin)->post('/schedules', $this->data())
             ->assertRedirect(route('schedules.index'));
         $this->assertDatabaseHas('jadwal', ['judul' => 'TPA Gelombang 1']);
@@ -79,6 +93,7 @@ class SchedulesTest extends TestCase
     public function test_update_modifies_jadwal(): void
     {
         $admin = $this->user('admin');
+        $this->bankSoalCukup();
         $jadwal = Jadwal::create($this->data());
         $this->actingAs($admin)->put("/schedules/{$jadwal->id}", $this->data([
             'judul' => 'TPA Gelombang 2',
