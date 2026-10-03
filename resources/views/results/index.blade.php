@@ -103,7 +103,7 @@
                                     @endif
                                     @if(!$item->diterbitkanPada)
                                         <form method="POST" action="{{ route('results.publish', $item->id) }}"
-                                              onsubmit="return confirm('Publish transcript for {{ $item->user->name }}?')">
+                                              data-confirm="Publish transcript for {{ $item->user->name }}?">
                                             @csrf
                                             <button type="submit"
                                                     class="rounded-lg border border-line px-3 py-1.5 text-xs font-medium hover:bg-black/5">

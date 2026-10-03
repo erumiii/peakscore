@@ -21,18 +21,18 @@
     @endif
 
     @if($soal->count())
-        <div class="rounded-xl border border-canvas bg-white p-4">
-            <div class="flex items-center justify-between text-sm">
-                <span class="font-medium">Progress</span>
-                <span class="text-muted"><span id="answeredCount">0</span> / {{ $soal->count() }} answered</span>
-            </div>
+        <div class="sticky top-4 z-10 rounded-xl border border-line bg-white p-4">
+                <div class="flex items-center justify-between text-sm">
+                    <span class="font-medium">Progress</span>
+                    <span class="text-muted"><span id="answeredCount">0</span> / {{ $soal->count() }} answered</span>
+                </div>
             <div class="mt-2 h-2 rounded-full bg-canvas">
-                <div id="progressFill" class="h-2 w-0 rounded-full bg-ink"></div>
+                <div id="progressFill" class="h-2 w-0 rounded-full bg-ink transition-[width] duration-300 ease-out"></div>
             </div>
         </div>
     @endif
 
-    <form id="testForm" method="POST" action="{{ route('peserta.test.submit', $jadwal->id) }}" class="space-y-4">
+    <form id="testForm" method="POST" action="{{ route('peserta.test.submit', $jadwal->id) }}" data-confirm="Submit answers? Answers cannot be changed after submission." class="space-y-4">
         @csrf
 
         @php($kategoriSekarang = null)
@@ -67,8 +67,7 @@
 
         <div class="flex justify-end">
             <button type="submit"
-                    class="rounded-lg bg-ink px-5 py-2.5 text-sm font-medium text-white hover:opacity-90"
-                    onclick="return confirm('Submit answers? Answers cannot be changed after submission.')">
+                    class="rounded-lg bg-ink px-5 py-2.5 text-sm font-medium text-white hover:opacity-90">
                 Submit Answers
             </button>
         </div>

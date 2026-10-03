@@ -277,4 +277,16 @@ class ManagementTest extends TestCase
         $this->assertDatabaseHas('users', ['id' => $peserta->id]);
         $this->assertDatabaseHas('hasil', ['userId' => $peserta->id]);
     }
+
+    public function test_delete_button_visible_but_disabled_when_peserta_has_hasil(): void
+    {
+        $admin = $this->user('admin');
+        $peserta = $this->user('peserta');
+        $this->hasil($peserta);
+
+        $this->actingAs($admin)->get('/participants')
+            ->assertOk()
+            ->assertSee('Participant has test history')
+            ->assertSee('disabled');
+    }
 }

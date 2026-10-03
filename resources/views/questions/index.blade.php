@@ -89,7 +89,7 @@
                                         </svg>
                                     </a>
                                     <form action="{{ route('questions.destroy', $item->soalId) }}" method="POST"
-                                        onsubmit="return confirm('Are you sure you want to delete this question?')">
+                                        data-confirm="Are you sure you want to delete this question?">
                                         @csrf @method('DELETE')
                                         <button type="submit" title="Delete"
                                             class="rounded-lg p-2 text-muted hover:bg-red-50 hover:text-red-600">

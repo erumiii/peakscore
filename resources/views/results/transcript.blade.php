@@ -18,11 +18,11 @@
         <div class="no-print mb-4 flex justify-end">
             <button onclick="window.print()"
                 class="rounded-lg bg-[#1C1C1A] px-4 py-2 text-sm font-medium text-white hover:opacity-90">
-                Cetak / Simpan PDF
+                Print PDF
             </button>
             <a href="{{ auth()->user()->isAdmin() ? route('results.index') : route('peserta.results') }}"
                 class="ml-2 rounded-lg border border-[#E7E2DC] bg-white px-4 py-2 text-sm font-medium hover:bg-[#F7F5F2]">
-                Kembali
+                Back
             </a>
         </div>
 

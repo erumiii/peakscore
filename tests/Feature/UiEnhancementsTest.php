@@ -157,6 +157,18 @@ class UiEnhancementsTest extends TestCase
             ->assertSee('answered');
     }
 
+    public function test_confirm_attribute_lives_on_form_not_button(): void
+    {
+        $peserta = $this->user('peserta');
+        $jadwal = $this->jadwal();
+        $this->soal('Verbal');
+
+        $response = $this->actingAs($peserta)->get("/test/{$jadwal->id}")->assertOk();
+
+        $this->assertMatchesRegularExpression('/<form[^>]*data-confirm/', $response->getContent());
+        $this->assertDoesNotMatchRegularExpression('/<button[^>]*data-confirm/', $response->getContent());
+    }
+
     public function test_pagination_uses_boxed_links(): void
     {
         $admin = $this->user('admin');
@@ -181,5 +193,37 @@ class UiEnhancementsTest extends TestCase
         $this->actingAs($peserta)->get('/')
             ->assertOk()
             ->assertSee('sticky top-0 h-screen');
+    }
+
+    public function test_motion_smoothing_present_on_both_layouts(): void
+    {
+        $admin = $this->user('admin');
+        $peserta = $this->user('peserta');
+
+        $this->actingAs($admin)->get('/questions')
+            ->assertOk()
+            ->assertSee('dialogIn')
+            ->assertSee('prefers-reduced-motion');
+
+        $this->actingAs($peserta)->get('/')
+            ->assertOk()
+            ->assertSee('dialogIn')
+            ->assertSee('prefers-reduced-motion');
+    }
+
+    public function test_confirms_use_modal_not_native(): void
+    {
+        $admin = $this->user('admin');
+
+        $this->actingAs($admin)->get('/participants')
+            ->assertOk()
+            ->assertSee('data-confirm')
+            ->assertSee('confirmDialog')
+            ->assertDontSee('return confirm(');
+
+        $peserta = $this->user('peserta');
+        $this->actingAs($peserta)->get('/')
+            ->assertOk()
+            ->assertSee('confirmDialog');
     }
 }

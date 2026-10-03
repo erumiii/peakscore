@@ -20,13 +20,38 @@
         dialog::backdrop { background: rgb(28 28 26 / 0.4); }
         /* Tailwind v4 preflight me-reset margin semua elemen - kembalikan centering bawaan <dialog> */
         dialog { margin: auto; }
+
+        /* Motion: hover halus di seluruh elemen interaktif */
+        a, button, input, select, textarea, tr {
+            transition: background-color .15s ease, border-color .15s ease, color .15s ease, opacity .15s ease;
+        }
+
+        /* Modal <dialog>: backdrop fade + box scale-up saat dibuka */
+        dialog[open] { animation: dialogIn .18s ease-out; }
+        dialog[open]::backdrop { animation: backdropIn .18s ease-out; }
+        @keyframes dialogIn {
+            from { opacity: 0; transform: translateY(6px) scale(.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes backdropIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .01ms !important;
+            }
+        }
     </style>
 </head>
 <body class="bg-canvas text-ink min-h-screen font-sans antialiased">
 <div class="flex min-h-screen">
     <aside class="sticky top-0 h-screen w-60 shrink-0 self-start overflow-y-auto bg-white border-r border-canvas p-4 flex flex-col gap-6">
         <div class="flex items-center gap-2.5 px-2 pt-2">
-            <div class="w-8 h-8 rounded-lg bg-ink text-white grid place-items-center text-sm font-semibold">P</div>
+            <img src="{{ asset('logo.svg') }}" alt="PeakScore logo" class="w-8 h-8 rounded-lg object-cover">
             <div>
                 <p class="text-sm font-semibold leading-tight">PeakScore</p>
                 <p class="text-[11px] text-muted leading-tight">Organizer Portal</p>
@@ -103,5 +128,6 @@
     </main>
 </div>
 @yield('scripts')
+@include('partials.confirm-dialog')
 </body>
 </html>
