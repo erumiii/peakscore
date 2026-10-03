@@ -182,8 +182,8 @@ Admin
 ![My Results](https://github.com/user-attachments/assets/e5d598db-8114-4a8a-a0a4-642f676bd5f4)
 
 ## Contributors
-[@erumiii](https://github.com/erumiii)
-[@nomedcode](https://github.com/nomedcode)
+- [@erumiii](https://github.com/erumiii)
+- [@nomedcode](https://github.com/nomedcode)
 
 
 
