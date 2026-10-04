@@ -109,4 +109,29 @@ class SchedulesTest extends TestCase
             ->assertRedirect(route('schedules.index'));
         $this->assertDatabaseMissing('jadwal', ['id' => $jadwal->id]);
     }
+
+    public function test_failed_soal_validation_reopens_dialog_as_modal(): void
+    {
+        Soal::query()->delete();
+        $admin = $this->user('admin');
+
+        $this->actingAs($admin)->post('/schedules', $this->data())
+            ->assertRedirect()
+            ->assertSessionHasErrors('soal');
+
+        $response = $this->actingAs($admin)->get(route('schedules.index'))
+            ->assertOk()
+            ->assertSee('The question bank needs at least 4 soal')
+            ->assertSee('data-auto-open');
+        $this->assertMatchesRegularExpression('/<dialog id="jadwalDialog"(?![^>]*\bopen\b)/', $response->content());
+    }
+
+    public function test_fresh_index_does_not_auto_open_dialog(): void
+    {
+        $admin = $this->user('admin');
+
+        $response = $this->actingAs($admin)->get(route('schedules.index'))->assertOk()
+            ->assertDontSee('data-auto-open');
+        $this->assertMatchesRegularExpression('/<dialog id="jadwalDialog"(?![^>]*\bopen\b)/', $response->content());
+    }
 }

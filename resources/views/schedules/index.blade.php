@@ -102,7 +102,7 @@
     {{ $jadwal->links() }}
 </div>
 
-<dialog id="jadwalDialog" @if($errors->any()) open @endif
+<dialog id="jadwalDialog"
         class="w-[480px] max-w-[90vw] rounded-xl border border-canvas bg-white p-0 backdrop:bg-ink/40">
     <form id="jadwalForm"
           method="POST"
@@ -175,6 +175,10 @@
         </div>
     </form>
 </dialog>
+
+@if($errors->any())
+    <script data-auto-open="jadwalDialog">document.getElementById('jadwalDialog').showModal();</script>
+@endif
 
 <script>
     const dialog = document.getElementById('jadwalDialog');
