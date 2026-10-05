@@ -103,6 +103,40 @@ class SmokeTest extends TestCase
         $this->assertDatabaseMissing('soal', ['soalId' => $row->soalId]);
     }
 
+    public function test_delete_prevents_deleting_question_with_recorded_answers(): void
+    {
+        $this->signInAdmin();
+        $marker = 'SMOKE-TEST-WITH-ANSWER-' . uniqid();
+        $row = \App\Models\Soal::create([
+            'isiSoal' => $marker, 'kategori' => 'Verbal',
+            'opsiA' => 'a', 'opsiB' => 'b', 'opsiC' => 'c', 'opsiD' => 'd',
+            'jawabanBenar' => 'B',
+        ]);
+        $peserta = \App\Models\User::create([
+            'username' => 'peserta-' . uniqid(),
+            'name' => 'Peserta Test',
+            'password' => \Illuminate\Support\Facades\Hash::make('password'),
+            'role' => 'peserta',
+        ]);
+        $jadwal = \App\Models\Jadwal::create([
+            'judul' => 'Jadwal Test ' . uniqid(),
+            'mulai' => now()->subDay(),
+            'selesai' => now()->addDay(),
+        ]);
+        \App\Models\Jawaban::create([
+            'jadwalId' => $jadwal->id,
+            'userId' => $peserta->id,
+            'soalId' => $row->soalId,
+            'opsiDipilih' => 'B',
+        ]);
+
+        $this->delete('/questions/' . $row->soalId)
+            ->assertRedirect(route('questions.index'))
+            ->assertSessionHas('error', 'Question has recorded participant answers and cannot be deleted.');
+
+        $this->assertDatabaseHas('soal', ['soalId' => $row->soalId]);
+    }
+
     public function test_search_filter_works(): void
     {
         $this->signInAdmin();
