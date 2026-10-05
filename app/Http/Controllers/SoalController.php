@@ -118,6 +118,12 @@ class SoalController extends Controller
     public function destroy($id)
     {
         $question = Soal::findOrFail($id);
+
+        if ($question->jawaban()->exists()) {
+            return redirect()->route('questions.index')
+                ->with('error', 'Question has recorded participant answers and cannot be deleted.');
+        }
+
         $question->delete();
 
         return redirect()->route('questions.index')->with('success', 'Question deleted successfully.');
