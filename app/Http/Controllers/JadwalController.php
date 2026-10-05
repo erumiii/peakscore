@@ -41,6 +41,12 @@ class JadwalController extends Controller
     public function destroy($id)
     {
         $jadwal = Jadwal::findOrFail($id);
+
+        if ($jadwal->hasil()->exists()) {
+            return redirect()->route('schedules.index')
+                ->with('error', 'Schedule has recorded test results and cannot be deleted.');
+        }
+
         $jadwal->delete();
 
         return redirect()->route('schedules.index')->with('success', 'Schedule deleted.');

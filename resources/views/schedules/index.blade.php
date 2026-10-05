@@ -20,6 +20,10 @@
         <div class="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-sm text-emerald-700">
             {{ session('success') }}
         </div>
+    @elseif(session('error'))
+        <div class="rounded-lg border border-red-200 bg-red-50 px-4 py-2.5 text-sm text-red-600">
+            {{ session('error') }}
+        </div>
     @endif
 
     <div class="overflow-hidden rounded-xl border border-canvas bg-white">

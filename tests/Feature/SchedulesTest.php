@@ -110,6 +110,25 @@ class SchedulesTest extends TestCase
         $this->assertDatabaseMissing('jadwal', ['id' => $jadwal->id]);
     }
 
+    public function test_destroy_prevents_deleting_schedule_with_results(): void
+    {
+        $admin = $this->user('admin');
+        $peserta = $this->user('peserta');
+        $jadwal = Jadwal::create($this->data());
+
+        \App\Models\Hasil::create([
+            'jadwalId' => $jadwal->id,
+            'userId' => $peserta->id,
+            'skorVerbal' => 100,
+        ]);
+
+        $this->actingAs($admin)->delete("/schedules/{$jadwal->id}")
+            ->assertRedirect(route('schedules.index'))
+            ->assertSessionHas('error', 'Schedule has recorded test results and cannot be deleted.');
+
+        $this->assertDatabaseHas('jadwal', ['id' => $jadwal->id]);
+    }
+
     public function test_failed_soal_validation_reopens_dialog_as_modal(): void
     {
         Soal::query()->delete();
