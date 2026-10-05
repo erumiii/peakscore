@@ -76,9 +76,10 @@ Admin
 ## Tech Stack
 
 - Laravel 11
-- MariaDB
+- MySQL 8.4
 - Tailwind CSS v4 (CDN)
 - Alpine.js 3 (CDN)
+- Docker & Docker Compose
 
 ## Project Structure
 ```
@@ -88,7 +89,7 @@ Admin
     │   │   ├── Controllers
     │   │   └── Middleware
     │   ├── Models
-    │   ├── Provider
+    │   ├── Providers
     │   └── View/
     │       └── Components
     ├── bootstrap
@@ -98,6 +99,9 @@ Admin
     │   ├── migrations
     │   ├── seeders
     │   └── .gitignore
+    ├── docker/
+    │   └── nginx/
+    │       └── default.conf
     ├── public/
     │   ├── js
     │   ├── uploads/
@@ -106,7 +110,7 @@ Admin
     ├── resources/
     │   ├── css
     │   ├── js
-    │   └── view/
+    │   └── views/
     │       ├── layouts
     │       ├── participants
     │       ├── peserta
@@ -128,6 +132,7 @@ Admin
     │   ├── Feature
     │   ├── Unit
     │   └── TestCase.php
+    ├── .dockerignore
     ├── .editorconfig
     ├── .env.example
     ├── .gitattributes
@@ -135,6 +140,8 @@ Admin
     ├── artisan
     ├── composer.json
     ├── composer.lock
+    ├── docker-compose.yaml
+    ├── Dockerfile
     ├── package.json
     ├── phpunit.xml
     └── vite.config.js
@@ -184,6 +191,3 @@ Admin
 ## Contributors
 - [@erumiii](https://github.com/erumiii)
 - [@nomedcode](https://github.com/nomedcode)
-
-
-
