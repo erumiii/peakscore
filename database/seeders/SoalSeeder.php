@@ -9,12 +9,12 @@ class SoalSeeder extends Seeder
 {
     public function run(): void
     {
-        $backup = __DIR__ . '/soal-backup.json';
+        $example = __DIR__ . '/contoh-soal.json';
         if (! is_file($backup)) {
             return;
         }
 
-        foreach (json_decode(file_get_contents($backup), true) as $row) {
+        foreach (json_decode(file_get_contents($example), true) as $row) {
             unset($row['soalId']);
             Soal::create($row);
         }
