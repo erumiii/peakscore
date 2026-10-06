@@ -46,12 +46,7 @@ jobs:
           php artisan key:generate
       
       - name: Migrate Database
-        run: php artisan migrate --force --seed
-
-      - name: Debug database
-        run: |
-          php artisan migrate:status
-          php artisan db:show --tables
+        run: php artisan migrate --force
         
       - name: Test
         run: php artisan test
