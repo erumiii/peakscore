@@ -47,6 +47,11 @@ jobs:
       
       - name: Migrate Database
         run: php artisan migrate --force --seed
+
+      - name: Debug database
+        run: |
+          php artisan migrate:status
+          php artisan db:show --tables
         
       - name: Test
         run: php artisan test
