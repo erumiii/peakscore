@@ -12,9 +12,9 @@ class SoalSeederTest extends TestCase
 
     public function test_soal_seeder_restores_rows_from_backup()
     {
-        $backup = database_path('seeders/soal-backup.json');
+        $example = database_path('seeders/contoh-soal.json');
 
-        if (! is_file($backup)) {
+        if (! is_file($example)) {
             $this->markTestSkipped('soal-backup.json tidak ada (file tidak di-track git)');
         }
 
