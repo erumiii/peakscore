@@ -22,7 +22,7 @@ class SoalSeederTest extends TestCase
 
         $this->seed(\Database\Seeders\SoalSeeder::class);
 
-        $expected = count(json_decode(file_get_contents($backup), true));
+        $expected = count(json_decode(file_get_contents($example), true));
         $this->assertSame($expected, Soal::count());
     }
 }

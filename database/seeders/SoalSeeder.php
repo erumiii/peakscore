@@ -10,7 +10,7 @@ class SoalSeeder extends Seeder
     public function run(): void
     {
         $example = __DIR__ . '/contoh-soal.json';
-        if (! is_file($backup)) {
+        if (! is_file($example)) {
             return;
         }
 
