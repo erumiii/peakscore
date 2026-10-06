@@ -48,7 +48,6 @@ jobs:
       - name: Migrate Database
         run: | 
           php artisan migrate --force
-          php artisan db:seed --class=SoalSeeder --force
         
       - name: Test
         run: php artisan test
