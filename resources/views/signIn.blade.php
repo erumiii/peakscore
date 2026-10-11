@@ -5,15 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In — PeakScore</title>
     <link rel="icon" href="{{ asset('favicon.ico') }}?v=2">
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <style type="text/tailwindcss">
-        @theme {
-            --color-canvas: #F7F5F2;
-            --color-ink: #1C1C1A;
-            --color-line: #E7E2DC;
-            --color-muted: #8A857C;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}?v=1">
 </head>
 <body class="bg-canvas text-ink min-h-screen font-sans antialiased">
 <div class="min-h-screen flex items-center justify-center p-4">

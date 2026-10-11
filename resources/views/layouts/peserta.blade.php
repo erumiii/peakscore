@@ -5,16 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'PeakScore')</title>
     <link rel="icon" href="{{ asset('favicon.ico') }}?v=2">
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <style type="text/tailwindcss">
-        @theme {
-            --color-canvas: #F7F5F2;
-            --color-ink: #1C1C1A;
-            --color-line: #E7E2DC;
-            --color-muted: #8A857C;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}?v=1">
+    <script defer src="{{ asset('vendor/alpine.min.js') }}?v=1"></script>
     <style>
         [x-cloak] { display: none !important; }
         dialog::backdrop { background: rgb(28 28 26 / 0.4); }

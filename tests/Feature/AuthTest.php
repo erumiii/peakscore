@@ -33,9 +33,11 @@ class AuthTest extends TestCase
 
     public function test_login_page_uses_design_system(): void
     {
+        // Token warna kini di stylesheet terkompilasi (lihat AssetTest),
+        // halaman cukup memuat stylesheet + memakai class token.
         $this->get('/login')
             ->assertOk()
-            ->assertSee('--color-canvas: #F7F5F2')
+            ->assertSee('css/app.css')
             ->assertSee('border-canvas')
             ->assertSee('bg-ink')
             ->assertDontSee('bg-blue-600')
