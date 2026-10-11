@@ -54,18 +54,37 @@ jobs:
   
   build_and_deploy:
     needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
       - name: Login to Docker Hub
         uses: docker/login-action@v4
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push
+      - name: Build and push app
         uses: docker/build-push-action@v7
         with:
+          context: .
+          file: ./Dockerfile
           push: true
-          tags: keenanmz/peakscore:latest
-    
-    
+          tags: |
+            keenanmz/peakscore:latest
+            keenanmz/peakscore:${{ github.sha }}
+
+      - name: Build and push nginx
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: docker/nginx/Dockerfile
+          push: true
+          build-args: |
+            APP_IMAGE=keenanmz/peakscore:${{ github.sha }}
+          tags: |
+            keenanmz/peakscore-nginx:latest
+            keenanmz/peakscore-nginx:${{ github.sha }}
