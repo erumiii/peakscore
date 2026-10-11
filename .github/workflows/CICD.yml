@@ -52,10 +52,12 @@ jobs:
       - name: Test
         run: php artisan test
   
-  build_and_deploy:
+  build_test_publish:
     needs: test
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    env:
+      IMAGE_TAG: ${{ github.sha }}
     steps:
       - uses: actions/checkout@v4
 
@@ -67,17 +69,15 @@ jobs:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push app
+      - name: Build and push app (SHA only)
         uses: docker/build-push-action@v7
         with:
           context: .
           file: ./Dockerfile
           push: true
-          tags: |
-            keenanmz/peakscore:latest
-            keenanmz/peakscore:${{ github.sha }}
+          tags: keenanmz/peakscore:${{ github.sha }}
 
-      - name: Build and push nginx
+      - name: Build and push nginx (SHA only)
         uses: docker/build-push-action@v7
         with:
           context: .
@@ -85,6 +85,60 @@ jobs:
           push: true
           build-args: |
             APP_IMAGE=keenanmz/peakscore:${{ github.sha }}
-          tags: |
-            keenanmz/peakscore-nginx:latest
+          tags: keenanmz/peakscore-nginx:${{ github.sha }}
+
+      - name: Smoke test app image
+        run: |
+          APP=keenanmz/peakscore:${{ github.sha }}
+          docker run --rm $APP php -v | grep "PHP 8.3"
+          docker run --rm $APP php -m | grep -E "pdo_mysql|Zend OPcache"
+          docker run --rm $APP ls public/css/app.css public/vendor/alpine.min.js
+          docker run --rm $APP php artisan --version
+
+      - name: Smoke test full stack
+        run: |
+          cat > .env <<EOF
+          APP_NAME=PeakScore
+          APP_ENV=production
+          APP_DEBUG=false
+          APP_KEY=base64:$(openssl rand -base64 32)
+          APP_URL=http://localhost
+          DB_CONNECTION=mysql
+          DB_HOST=database
+          DB_PORT=3306
+          DB_DATABASE=peakscore
+          DB_USERNAME=peakscore
+          DB_PASSWORD=secret
+          DB_ROOT_PASSWORD=rootsecret
+          SESSION_DRIVER=file
+          CACHE_STORE=file
+          QUEUE_CONNECTION=sync
+          EOF
+
+          docker compose -f docker-compose.prod.yml pull
+          docker compose -f docker-compose.prod.yml up -d --wait --wait-timeout 120
+          docker compose -f docker-compose.prod.yml exec -T app php artisan migrate --force
+
+          # aplikasi hidup (lewat nginx -> php-fpm -> db)
+          curl -fsS --retry 15 --retry-delay 3 --retry-connrefused http://localhost/up
+
+          # aset statis dilayani nginx dari image-nya sendiri
+          curl -fsS -o /dev/null http://localhost/css/app.css
+          curl -fsS -o /dev/null http://localhost/vendor/alpine.min.js
+
+          # file tersembunyi terblokir
+          code=$(curl -s -o /dev/null -w "%{http_code}" http://localhost/.env)
+          [ "$code" = "403" ] || [ "$code" = "404" ]
+
+      - name: Show logs on failure
+        if: failure()
+        run: docker compose -f docker-compose.prod.yml logs --no-color
+
+      - name: Promote latest
+        run: |
+          docker buildx imagetools create \
+            -t keenanmz/peakscore:latest \
+            keenanmz/peakscore:${{ github.sha }}
+          docker buildx imagetools create \
+            -t keenanmz/peakscore-nginx:latest \
             keenanmz/peakscore-nginx:${{ github.sha }}
