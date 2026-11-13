@@ -42,4 +42,10 @@ jobs:
 
           echo ${{ secrets.DOCKER_PWD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
           docker scout quickview keenanmz/peakscore:${{ env.SHORT_SHA }}
-          docker scout cves keenanmz/peakscore:${{ env.SHORT_SHA }}
+          docker scout cves --only-severity critical,high --format json --output docker-scout-report.json keenanmz/peakscore:${{ env.SHORT_SHA }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Docker Scout findings
+          path: docker-scout-report.json 
