@@ -27,7 +27,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Setup Docker
-        run: docker-practice/actions-setup-docker@v1
+        uses: docker-practice/actions-setup-docker@v1
+        with:
+          docker-version: "29.9.3"
         
       - name: Set short SHA
         run: echo "SHORT_SHA=${GITHUB_SHA:0:7}" >> $GITHUB_ENV
