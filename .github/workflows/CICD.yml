@@ -45,7 +45,7 @@ jobs:
           docker scout cves --only-severity critical,high --format json --output docker-scout-report.json keenanmz/peakscore:${{ env.SHORT_SHA }}
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v7
         with:
           name: Docker Scout findings
           path: docker-scout-report.json 
