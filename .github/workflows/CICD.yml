@@ -21,6 +21,7 @@ jobs:
         run: vendor/bin/progpilot .
 
   build_and_test_image:
+    needs: sast_test
     runs-on: ubuntu-latest
 
     steps:
