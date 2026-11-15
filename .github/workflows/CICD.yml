@@ -33,7 +33,7 @@ jobs:
         run: composer require designsecurity/progpilot
       
       - name: Install CycloneDX
-        run: composer require require cyclonedx/cyclonedx-php-composer
+        run: composer require cyclonedx/cyclonedx-php-composer
 
       - name: Run progpilot scan
         run: vendor/bin/progpilot . > progpilot-results.json
