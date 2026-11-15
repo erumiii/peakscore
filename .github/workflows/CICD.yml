@@ -105,7 +105,7 @@ jobs:
       - name: Upload Image scan and SBOM artifact
         uses: actions/upload-artifact@v7
         with:
-          name: Docker Scout findings
+          name: Docker Scout findings and SBOM
           path: |
             docker-scout-app-report.json
             docker-scout-nginx-report.json
