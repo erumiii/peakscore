@@ -3,11 +3,26 @@ name: CI
 on: [push]
 
 jobs:
-  sast_test:
+  secrets_scanning:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      
+      - name: Secret Scanning
+        uses: gitleaks/gitleaks-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+  sast_and_sca_scan:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v6
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -18,14 +33,27 @@ jobs:
         run: composer require designsecurity/progpilot
 
       - name: Run progpilot scan
-        run: vendor/bin/progpilot .
+        run: vendor/bin/progpilot . > progpilot-results.json
+
+      - name: Dependencies scan
+        run: composer audit --format=json > composer-audit-report.json
+
+      - name: Upload SAST and SCA scan artifact
+        uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: Composer audit and progpilot findings
+          path: |
+            progpilot-results.json
+            composer-audit-report.json 
 
   build_and_test_image:
-    needs: sast_test
+    needs: [sast_and_sca_scan, secrets_scanning]
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v6
 
       - name: Setup Docker
         uses: docker/setup-buildx-action@v3
@@ -45,7 +73,7 @@ jobs:
           docker scout quickview ${{ vars.DOCKERHUB_REPO }}:${{ env.SHORT_SHA }}
           docker scout cves --only-severity critical,high --format sarif --output docker-scout-report.json ${{ vars.DOCKERHUB_REPO }}:${{ env.SHORT_SHA }}
 
-      - name: Upload artifact
+      - name: Upload Image scan artifact
         uses: actions/upload-artifact@v7
         with:
           name: Docker Scout findings
