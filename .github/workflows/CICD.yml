@@ -31,9 +31,6 @@ jobs:
       
       - name: Install progpilot
         run: composer require designsecurity/progpilot
-      
-      - name: Install CycloneDX
-        run: composer require cyclonedx/cyclonedx-php-composer
 
       - name: Run progpilot scan
         run: vendor/bin/progpilot . > progpilot-results.json
@@ -41,9 +38,6 @@ jobs:
       - name: Dependencies scan
         continue-on-error: true
         run: composer audit --ignore-severity=low --ignore-severity=medium --format=json > composer-audit-report.json
-
-      - name: Create SBOM
-        run: composer CycloneDX:make-sbom --no-dev --output-format=JSON --output-file=sbom.json
 
       - name: Upload SAST and SCA scan artifact
         uses: actions/upload-artifact@v7
@@ -53,7 +47,6 @@ jobs:
           path: |
             progpilot-results.json
             composer-audit-report.json
-            sbom.json
 
   build_and_test_image:
     needs: [sast_and_sca_scan, secrets_scanning]
@@ -87,14 +80,6 @@ jobs:
           docker scout quickview ${{ vars.DOCKERHUB_REPO }}-nginx:${{ env.SHORT_SHA }}
           docker scout cves --only-severity critical,high --format sarif --output docker-scout-nginx-report.json ${{ vars.DOCKERHUB_REPO }}-nginx:${{ env.SHORT_SHA }}
 
-      - name: Upload Image scan artifact
-        uses: actions/upload-artifact@v7
-        with:
-          name: Docker Scout findings
-          path: |
-            docker-scout-app-report.json
-            docker-scout-nginx-report.json
-
       - name: Push App image to Docker Hub
         run: docker image push ${{ vars.DOCKERHUB_REPO }}:${{ env.SHORT_SHA }}
 
@@ -109,3 +94,19 @@ jobs:
           docker buildx imagetools create \
             -t ${{ vars.DOCKERHUB_REPO }}-nginx:latest \
             ${{ vars.DOCKERHUB_REPO }}-nginx:${{ env.SHORT_SHA }}
+
+      - name: Generate SBOM
+        uses: anchore/sbom-action@v0
+        with:
+          image: ${{ vars.DOCKERHUB_REPO }}:${{ env.SHORT_SHA }}
+          format: cyclonedx-json
+          output-file: sbom.cdx.json
+
+      - name: Upload Image scan and SBOM artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: Docker Scout findings
+          path: |
+            docker-scout-app-report.json
+            docker-scout-nginx-report.json
+            sbom.cdx.json
