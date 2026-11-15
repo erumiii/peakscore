@@ -31,6 +31,9 @@ jobs:
       
       - name: Install progpilot
         run: composer require designsecurity/progpilot
+      
+      - name: Install CycloneDX
+        run: composer require require cyclonedx/cyclonedx-php-composer
 
       - name: Run progpilot scan
         run: vendor/bin/progpilot . > progpilot-results.json
@@ -38,6 +41,9 @@ jobs:
       - name: Dependencies scan
         continue-on-error: true
         run: composer audit --ignore-severity=low --ignore-severity=medium --format=json > composer-audit-report.json
+
+      - name: Create SBOM
+        run: composer CycloneDX:make-sbom --no-dev --output-format=JSON --output-file=sbom.json
 
       - name: Upload SAST and SCA scan artifact
         uses: actions/upload-artifact@v7
@@ -47,6 +53,7 @@ jobs:
           path: |
             progpilot-results.json
             composer-audit-report.json
+            sbom.json
 
   build_and_test_image:
     needs: [sast_and_sca_scan, secrets_scanning]
