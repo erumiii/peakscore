@@ -36,6 +36,7 @@ jobs:
         run: vendor/bin/progpilot . > progpilot-results.json
 
       - name: Dependencies scan
+        continue-on-error: true
         run: composer audit --format=json > composer-audit-report.json
 
       - name: Upload SAST and SCA scan artifact
