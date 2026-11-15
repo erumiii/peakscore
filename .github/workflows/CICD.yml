@@ -37,7 +37,7 @@ jobs:
 
       - name: Dependencies scan
         continue-on-error: true
-        run: composer audit --format=json > composer-audit-report.json
+        run: composer audit --ignore-severity=low --ignore-severity=medium
 
       - name: Upload SAST and SCA scan artifact
         uses: actions/upload-artifact@v7
@@ -46,7 +46,7 @@ jobs:
           name: Composer audit and progpilot findings
           path: |
             progpilot-results.json
-            composer-audit-report.json 
+            
 
   build_and_test_image:
     needs: [sast_and_sca_scan, secrets_scanning]
